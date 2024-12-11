@@ -99,7 +99,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	ball.color = BLUE;
 	ball.acceleration = { 0.0f,-5.8f,0.0f };
 
-	float deltaTime = 1.0f / 60.0f;
+	//float deltaTime = 1.0f / 60.0f;
 	//float length = 0;// Length(diff);
 
 	//float angularVelocity = 0.0f;
@@ -109,7 +109,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	int  MousePosY;
 	Vector2 preMouse = { 0 };
 	Transform precamera = { 0 };
-	bool furag=false;
+	//bool furag=false;
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0) {
 		// フレームの開始
@@ -133,38 +133,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		Matrix4x4 viewportMatrix = MakeViewportMatrix(0, 0, float(kClientWindth), float(kClientHeight), 0.0f, 1.0f);
 
 		
-		if (furag) { ball.velocity = ball.velocity + ball.acceleration * deltaTime; };
-		
-		ball.position = ball.position + ball.velocity * deltaTime;
-		if (IsCollision(Sphere{ ball.position,ball.radius }, plane)) {
-
-			Vector3 reflected = Reflect(ball.velocity, plane.normal);
-			Vector3 projecToNormal = Project(ball.velocity, plane.normal);
-			Vector3 movingDirection = reflected - projecToNormal;
-			ball.velocity = projecToNormal * e + movingDirection;
-
-
-
-
-		}
+		Vector3 axside = Normaraize({ 1.0f,1.0f,1.0f });
+		float angle = 0.44f;
+		Matrix4x4 rotateMatrixX = MakeRotateAxisAngle(axside, angle);
 
 
 
 		ImGui::Begin("Window");
-		if (ImGui::Button("start")) {
-			
-			furag = true;
-		}
-
-		// 項目2
-		if (ImGui::CollapsingHeader("Object2", ImGuiTreeNodeFlags_DefaultOpen))
-		{
-			ImGui::DragFloat3("plane.Normal", &plane.normal.x, 0.01f);
-			ImGui::DragFloat("plane.Distance", &plane.distance, 0.01f);
-
-			plane.normal = Normaraize(plane.normal);
-
-		}
+		
 
 		ImGui::End();
 
@@ -181,7 +157,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 
 
-		
+		MatrixScreenPrintf(0, 0, rotateMatrixX);
 
 
 		

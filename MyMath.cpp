@@ -208,7 +208,7 @@ void MatrixScreenPrintf(int x, int y, const Matrix4x4& matrix)
 	for (int row = 0; row < 4; ++row) {
 		for (int column = 0; column < 4; ++column) {
 			Novice::ScreenPrintf(
-				x + column * kcolumnWidth, y + row * krowHeight, "%6.02f", matrix.m[row][column]);
+				x + column * kcolumnWidth, y + row * krowHeight, "%6.03f", matrix.m[row][column]);
 		}
 	}
 }
@@ -898,26 +898,34 @@ Vector3 Reflect(const Vector3& input, const Vector3& normal)
 Matrix4x4 MakeRotateAxisAngle(const Vector3& axis, float angle)
 {
 	Matrix4x4 ans;
-	Vector3 normAxis = Normaraize(axis);
-	float cosA = std::cos(angle);
-	float sinA = std::sin(angle);
+
+	float cosA = cosf(angle);
+	float sinA = sinf(angle);
 	float oneMinusCosA = 1.0f - cosA;
 
-	ans.m[0][0] = cosA + normAxis.x * normAxis.x * oneMinusCosA;
-	ans.m[0][1] = normAxis.x * normAxis.y * oneMinusCosA - normAxis.z * sinA;
-	ans.m[0][2] = normAxis.x * normAxis.z * oneMinusCosA + normAxis.y * sinA;
+	float x = axis.x;
+	float y = axis.y;
+	float z = axis.z;
+
+	// Row 0
+	ans.m[0][0] = x * x * oneMinusCosA + cosA;
+	ans.m[0][1] = x * y * oneMinusCosA + z * sinA;
+	ans.m[0][2] = x * z * oneMinusCosA - y * sinA;
 	ans.m[0][3] = 0.0f;
 
-	ans.m[1][0] = normAxis.y * normAxis.x * oneMinusCosA + normAxis.z * sinA;
-	ans.m[1][1] = cosA + normAxis.y * normAxis.y * oneMinusCosA;
-	ans.m[1][2] = normAxis.y * normAxis.z * oneMinusCosA - normAxis.x * sinA;
+	// Row 1
+	ans.m[1][0] = y * x * oneMinusCosA - z * sinA;
+	ans.m[1][1] = y * y * oneMinusCosA + cosA;
+	ans.m[1][2] = y * z * oneMinusCosA + x * sinA;
 	ans.m[1][3] = 0.0f;
 
-	ans.m[2][0] = normAxis.z * normAxis.x * oneMinusCosA - normAxis.y * sinA;
-	ans.m[2][1] = normAxis.z * normAxis.y * oneMinusCosA + normAxis.x * sinA;
-	ans.m[2][2] = cosA + normAxis.z * normAxis.z * oneMinusCosA;
+	// Row 2
+	ans.m[2][0] = z * x * oneMinusCosA + y * sinA;
+	ans.m[2][1] = z * y * oneMinusCosA - x * sinA;
+	ans.m[2][2] = z * z * oneMinusCosA + cosA;
 	ans.m[2][3] = 0.0f;
 
+	// Row 3
 	ans.m[3][0] = 0.0f;
 	ans.m[3][1] = 0.0f;
 	ans.m[3][2] = 0.0f;
@@ -925,6 +933,7 @@ Matrix4x4 MakeRotateAxisAngle(const Vector3& axis, float angle)
 
 	return ans;
 }
+
 
 
 
