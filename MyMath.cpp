@@ -895,6 +895,37 @@ Vector3 Reflect(const Vector3& input, const Vector3& normal)
 	return input - 2 * Dot(input, normal) * normal;
 }
 
+Matrix4x4 MakeRotateAxisAngle(const Vector3& axis, float angle)
+{
+	Matrix4x4 ans;
+	Vector3 normAxis = Normaraize(axis);
+	float cosA = std::cos(angle);
+	float sinA = std::sin(angle);
+	float oneMinusCosA = 1.0f - cosA;
+
+	ans.m[0][0] = cosA + normAxis.x * normAxis.x * oneMinusCosA;
+	ans.m[0][1] = normAxis.x * normAxis.y * oneMinusCosA - normAxis.z * sinA;
+	ans.m[0][2] = normAxis.x * normAxis.z * oneMinusCosA + normAxis.y * sinA;
+	ans.m[0][3] = 0.0f;
+
+	ans.m[1][0] = normAxis.y * normAxis.x * oneMinusCosA + normAxis.z * sinA;
+	ans.m[1][1] = cosA + normAxis.y * normAxis.y * oneMinusCosA;
+	ans.m[1][2] = normAxis.y * normAxis.z * oneMinusCosA - normAxis.x * sinA;
+	ans.m[1][3] = 0.0f;
+
+	ans.m[2][0] = normAxis.z * normAxis.x * oneMinusCosA - normAxis.y * sinA;
+	ans.m[2][1] = normAxis.z * normAxis.y * oneMinusCosA + normAxis.x * sinA;
+	ans.m[2][2] = cosA + normAxis.z * normAxis.z * oneMinusCosA;
+	ans.m[2][3] = 0.0f;
+
+	ans.m[3][0] = 0.0f;
+	ans.m[3][1] = 0.0f;
+	ans.m[3][2] = 0.0f;
+	ans.m[3][3] = 1.0f;
+
+	return ans;
+}
+
 
 
 

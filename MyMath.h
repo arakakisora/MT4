@@ -172,3 +172,5 @@ void DrowBezier(const Vector3& controlPint0, const Vector3& controlPoint1, const
 
 //ヴェクトルを求める関数
 Vector3 Reflect(const Vector3& input, const Vector3& normal);
+//ベクトルを求める関数
+Matrix4x4 MakeRotateAxisAngke(const Vector3& axis, float angle);
