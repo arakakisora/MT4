@@ -87,8 +87,8 @@ Vector3 operator/(const Vector3& v, float s);
 Matrix4x4 operator+(const Matrix4x4& m1, const Matrix4x4& m2);
 Matrix4x4 operator-(const Matrix4x4& m1, const Matrix4x4& m2);
 Matrix4x4 operator* (const Matrix4x4& m1, const Matrix4x4& m2);
-Vector3 operator-(const Vector3& v); 
-Vector3 operator+(const Vector3& v);
+//Vector3 operator-(const Vector3& v); 
+//Vector3 operator+(const Vector3& v);
 
 
 //回転
@@ -174,3 +174,5 @@ void DrowBezier(const Vector3& controlPint0, const Vector3& controlPoint1, const
 Vector3 Reflect(const Vector3& input, const Vector3& normal);
 //ベクトルを求める関数
 Matrix4x4 MakeRotateAxisAngle(const Vector3& axis, float angle);
+
+Matrix4x4 DirectionToDirection(const Vector3& from, const Vector3& to);

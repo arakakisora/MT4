@@ -934,6 +934,47 @@ Matrix4x4 MakeRotateAxisAngle(const Vector3& axis, float angle)
 	return ans;
 }
 
+Matrix4x4 DirectionToDirection(const Vector3& from, const Vector3& to)
+{
+	Matrix4x4 ans;
+
+	float cosA = Dot(Normaraize(from), Normaraize(to));
+	float sinA = Length(Cross(Normaraize(from), Normaraize(to)));
+	float oneMinusCosA = 1.0f - cosA;
+
+	Vector3 axis = Normaraize(Cross(from, to));
+
+	float x = axis.x;
+	float y = axis.y;
+	float z = axis.z;
+
+	// Row 0
+	ans.m[0][0] = x * x * oneMinusCosA + cosA;
+	ans.m[0][1] = x * y * oneMinusCosA + z * sinA;
+	ans.m[0][2] = x * z * oneMinusCosA - y * sinA;
+	ans.m[0][3] = 0.0f;
+
+	// Row 1
+	ans.m[1][0] = y * x * oneMinusCosA - z * sinA;
+	ans.m[1][1] = y * y * oneMinusCosA + cosA;
+	ans.m[1][2] = y * z * oneMinusCosA + x * sinA;
+	ans.m[1][3] = 0.0f;
+
+	// Row 2
+	ans.m[2][0] = z * x * oneMinusCosA + y * sinA;
+	ans.m[2][1] = z * y * oneMinusCosA - x * sinA;
+	ans.m[2][2] = z * z * oneMinusCosA + cosA;
+	ans.m[2][3] = 0.0f;
+
+	// Row 3
+	ans.m[3][0] = 0.0f;
+	ans.m[3][1] = 0.0f;
+	ans.m[3][2] = 0.0f;
+	ans.m[3][3] = 1.0f;
+
+	return ans;
+}
+
 
 
 

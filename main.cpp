@@ -133,9 +133,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		Matrix4x4 viewportMatrix = MakeViewportMatrix(0, 0, float(kClientWindth), float(kClientHeight), 0.0f, 1.0f);
 
 		
-		Vector3 axside = Normaraize({ 1.0f,1.0f,1.0f });
-		float angle = 0.44f;
-		Matrix4x4 rotateMatrixX = MakeRotateAxisAngle(axside, angle);
+		Vector3 from0 = Normaraize(Vector3{ 1.0f,0.7f,0.5f });
+		Vector3 to0 = {-from0.x,-from0.y ,-from0.z };
+		Vector3 from1 = Normaraize(Vector3{ -0.6f,0.9f,0.2f });
+		Vector3 to1 = Normaraize(Vector3{ 0.4f,0.7f,-0.5f });
+
+		Matrix4x4 rotateMatrix0 = DirectionToDirection(Normaraize(Vector3{1.0f,0.0f,0.0f}), Normaraize(Vector3{-1.0f,0.0f,0.0f}));
+		Matrix4x4 rotateMatriX1 = DirectionToDirection(from0, to0);
+		Matrix4x4 rotateMatrix2 = DirectionToDirection(from1, to1);	
 
 
 
@@ -157,7 +162,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 
 
-		MatrixScreenPrintf(0, 0, rotateMatrixX);
+		MatrixScreenPrintf(0, 0, rotateMatrix0);
+
+		MatrixScreenPrintf(0, 200, rotateMatriX1);
+
+		MatrixScreenPrintf(0, 400, rotateMatrix2);
 
 
 		
