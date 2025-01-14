@@ -934,46 +934,75 @@ Matrix4x4 MakeRotateAxisAngle(const Vector3& axis, float angle)
 	return ans;
 }
 
+//Matrix4x4 DirectionToDirection(const Vector3& from, const Vector3& to)
+//{
+//	Matrix4x4 ans;
+//
+//	float cosA = Dot(Normaraize(from), Normaraize(to));
+//	float sinA = Length(Cross(Normaraize(from), Normaraize(to)));
+//	float oneMinusCosA = 1.0f - cosA;
+//
+//	Vector3 axis = Normaraize(Cross(from, to));
+//
+//	float x = axis.x;
+//	float y = axis.y;
+//	float z = axis.z;
+//
+//	// Row 0
+//	ans.m[0][0] = x * x * oneMinusCosA + cosA;
+//	ans.m[0][1] = x * y * oneMinusCosA + z * sinA;
+//	ans.m[0][2] = x * z * oneMinusCosA - y * sinA;
+//	ans.m[0][3] = 0.0f;
+//
+//	// Row 1
+//	ans.m[1][0] = y * x * oneMinusCosA - z * sinA;
+//	ans.m[1][1] = y * y * oneMinusCosA + cosA;
+//	ans.m[1][2] = y * z * oneMinusCosA + x * sinA;
+//	ans.m[1][3] = 0.0f;
+//
+//	// Row 2
+//	ans.m[2][0] = z * x * oneMinusCosA + y * sinA;
+//	ans.m[2][1] = z * y * oneMinusCosA - x * sinA;
+//	ans.m[2][2] = z * z * oneMinusCosA + cosA;
+//	ans.m[2][3] = 0.0f;
+//
+//	// Row 3
+//	ans.m[3][0] = 0.0f;
+//	ans.m[3][1] = 0.0f;
+//	ans.m[3][2] = 0.0f;
+//	ans.m[3][3] = 1.0f;
+//
+//	return ans;
+//}
+
 Matrix4x4 DirectionToDirection(const Vector3& from, const Vector3& to)
 {
-	Matrix4x4 ans;
+	Vector3 fromNormalized = Normaraize(from);
+	Vector3 toNormalized = Normaraize(to);
+	float dotProduct = Dot(fromNormalized, toNormalized);
 
-	float cosA = Dot(Normaraize(from), Normaraize(to));
-	float sinA = Length(Cross(Normaraize(from), Normaraize(to)));
-	float oneMinusCosA = 1.0f - cosA;
+	// from と to が平行または反平行の場合の特別な処理
+	if (dotProduct > 0.9999f) {
+		// from と to が同じ方向を向いている場合、単位行列を返す
+		return Matrix4x4{
+			1.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 1.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 1.0f, 0.0f,
+			0.0f, 0.0f, 0.0f, 1.0f
+		};
+	}
+	else if (dotProduct < -0.9999f) {
+		// from と to が反対方向を向いている場合、任意の垂直ベクトルを軸として180度回転行列を作成
+		Vector3 orthogonalAxis = (fabs(fromNormalized.x) > fabs(fromNormalized.z)) ? Vector3{ -fromNormalized.y, fromNormalized.x, 0.0f } : Vector3{ 0.0f, -fromNormalized.z, fromNormalized.y };
+		orthogonalAxis = Normaraize(orthogonalAxis);
+		return MakeRotateAxisAngle(orthogonalAxis, 3.14159265358979323846f); // 180度回転
+	}
 
-	Vector3 axis = Normaraize(Cross(from, to));
-
-	float x = axis.x;
-	float y = axis.y;
-	float z = axis.z;
-
-	// Row 0
-	ans.m[0][0] = x * x * oneMinusCosA + cosA;
-	ans.m[0][1] = x * y * oneMinusCosA + z * sinA;
-	ans.m[0][2] = x * z * oneMinusCosA - y * sinA;
-	ans.m[0][3] = 0.0f;
-
-	// Row 1
-	ans.m[1][0] = y * x * oneMinusCosA - z * sinA;
-	ans.m[1][1] = y * y * oneMinusCosA + cosA;
-	ans.m[1][2] = y * z * oneMinusCosA + x * sinA;
-	ans.m[1][3] = 0.0f;
-
-	// Row 2
-	ans.m[2][0] = z * x * oneMinusCosA + y * sinA;
-	ans.m[2][1] = z * y * oneMinusCosA - x * sinA;
-	ans.m[2][2] = z * z * oneMinusCosA + cosA;
-	ans.m[2][3] = 0.0f;
-
-	// Row 3
-	ans.m[3][0] = 0.0f;
-	ans.m[3][1] = 0.0f;
-	ans.m[3][2] = 0.0f;
-	ans.m[3][3] = 1.0f;
-
-	return ans;
+	Vector3 axis = Cross(fromNormalized, toNormalized);
+	float angle = acos(dotProduct);
+	return MakeRotateAxisAngle(axis, angle);
 }
+
 
 
 

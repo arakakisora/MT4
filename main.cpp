@@ -132,7 +132,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		Matrix4x4 viewprojectionMatrix = Multiply(viewMatrix, projectionMatrix);
 		Matrix4x4 viewportMatrix = MakeViewportMatrix(0, 0, float(kClientWindth), float(kClientHeight), 0.0f, 1.0f);
 
-		
+	
 		Vector3 from0 = Normaraize(Vector3{ 1.0f,0.7f,0.5f });
 		Vector3 to0 = {-from0.x,-from0.y ,-from0.z };
 		Vector3 from1 = Normaraize(Vector3{ -0.6f,0.9f,0.2f });
@@ -173,9 +173,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 
 
-		DrawGrid(worldviewprojectionMatrix, viewportMatrix);
+		/*DrawGrid(worldviewprojectionMatrix, viewportMatrix);
 		DrawSphere(Sphere{ ball.position,ball.radius }, viewprojectionMatrix, viewportMatrix, WHITE);
-		DroawPlane(plane, viewprojectionMatrix, viewportMatrix, WHITE);
+		DroawPlane(plane, viewprojectionMatrix, viewportMatrix, WHITE);*/
 
 		///
 		/// ↑描画処理ここまで
