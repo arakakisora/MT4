@@ -105,6 +105,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	//float angularVelocity = 0.0f;
 	//float angle = 0.0f;
 
+	Quaternion q1 = { 2.0f, 3.0f, 4.0f, 1.0f };
+	Quaternion q2 = { 1.0f, 3.0f, 5.0f, 2.0f };
+
+	Quaternion identity = IdentityQuaternion();
+	Quaternion conj = Conjugate(q1);
+	Quaternion inv = Inverse(q1);
+	Quaternion normal = Normalize(q1);
+	Quaternion mul1 = Multiply(q1, q2);
+	Quaternion mul2 = Multiply(q2, q1);
+	//float norm = Norm(q1);
+
 	int  MousePosX;
 	int  MousePosY;
 	Vector2 preMouse = { 0 };
@@ -146,6 +157,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		ImGui::Begin("Window");
 		
+		
 
 		ImGui::End();
 
@@ -162,14 +174,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 
 
-		MatrixScreenPrintf(0, 0, rotateMatrix0);
+		/*MatrixScreenPrintf(0, 0, rotateMatrix0);
 
 		MatrixScreenPrintf(0, 200, rotateMatriX1);
 
-		MatrixScreenPrintf(0, 400, rotateMatrix2);
+		MatrixScreenPrintf(0, 400, rotateMatrix2);*/
 
 
-		
+		//クオタニオンを描画
+		PrintQuaternion("Identity", identity);
+		PrintQuaternion("Conjugate", conj);
+		PrintQuaternion("Inverse", inv);
+		PrintQuaternion("Normalize", normal);
+		PrintQuaternion("Multiply(q1, q2)", mul1);
+		PrintQuaternion("Multiply(q2, q1)", mul2);
 
 
 

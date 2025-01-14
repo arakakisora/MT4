@@ -8,6 +8,9 @@
 #include <stdio.h>
 #include <numbers>
 #include <algorithm>
+#include <string>
+#include <iostream>
+#include <iomanip>
 
 struct Spring {
 	// アンカー。固定された端の位置
@@ -74,6 +77,10 @@ struct AABB {
 
 	Vector3 min;
 	Vector3 max;
+};
+
+struct Quaternion {
+	float w, x, y, z;
 };
 
 //Vector3 operator+(const Vector3&v1,const Vector3 v2)
@@ -176,3 +183,31 @@ Vector3 Reflect(const Vector3& input, const Vector3& normal);
 Matrix4x4 MakeRotateAxisAngle(const Vector3& axis, float angle);
 
 Matrix4x4 DirectionToDirection(const Vector3& from, const Vector3& to);
+
+
+
+
+
+// クォータニオンの積
+Quaternion Multiply(const Quaternion& lhs, const Quaternion& rhs);
+
+// 単位クォータニオンを返す
+Quaternion IdentityQuaternion();
+
+// 共役クォータニオンを返す
+Quaternion Conjugate(const Quaternion& quaternion);
+
+// クォータニオンのノルムを返す
+float Norm(const Quaternion& quaternion);
+
+// 正規化したクォータニオンを返す
+Quaternion Normalize(const Quaternion& quaternion);
+
+
+// 逆クォータニオンを返す
+Quaternion Inverse(const Quaternion& quaternion);
+
+
+
+// クォータニオンを出力するヘルパー関数
+void PrintQuaternion(const std::string& name, const Quaternion& q);

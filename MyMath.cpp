@@ -2,6 +2,9 @@
 #define NOMINMAX 
 #include <windows.h>
 #include "MyMath.h"
+#include <iostream>
+#include <iomanip>
+
 
 Vector3 operator+(const Vector3& v1, const Vector3& v2) { return Add(v1, v2); }
 Vector3 operator-(const Vector3& v1, const Vector3& v2) { return Subtract(v1, v2); }
@@ -1002,6 +1005,63 @@ Matrix4x4 DirectionToDirection(const Vector3& from, const Vector3& to)
 	float angle = acos(dotProduct);
 	return MakeRotateAxisAngle(axis, angle);
 }
+
+Quaternion Multiply(const Quaternion& lhs, const Quaternion& rhs)
+{
+	return {
+		lhs.w * rhs.w - lhs.x * rhs.x - lhs.y * rhs.y - lhs.z * rhs.z,
+		lhs.w * rhs.x + lhs.x * rhs.w + lhs.y * rhs.z - lhs.z * rhs.y,
+		lhs.w * rhs.y - lhs.x * rhs.z + lhs.y * rhs.w + lhs.z * rhs.x,
+		lhs.w * rhs.z + lhs.x * rhs.y - lhs.y * rhs.x + lhs.z * rhs.w
+	};
+}
+Quaternion IdentityQuaternion()
+{
+	return { 1.0f, 0.0f, 0.0f, 0.0f };
+}
+Quaternion Conjugate(const Quaternion& quaternion)
+{
+	return { quaternion.w, -quaternion.x, -quaternion.y, -quaternion.z };
+}
+float Norm(const Quaternion& quaternion)
+{
+	return std::sqrt(
+		quaternion.w * quaternion.w +
+		quaternion.x * quaternion.x +
+		quaternion.y * quaternion.y +
+		quaternion.z * quaternion.z
+	);
+}
+
+Quaternion Normalize(const Quaternion& quaternion)
+{
+	float norm = Norm(quaternion);
+	return {
+		quaternion.w / norm,
+		quaternion.x / norm,
+		quaternion.y / norm,
+		quaternion.z / norm
+	};
+}
+
+Quaternion Inverse(const Quaternion& quaternion)
+{
+	Quaternion conjugate = Conjugate(quaternion);
+	float normSquared = Norm(quaternion) * Norm(quaternion);
+	return {
+		conjugate.w / normSquared,
+		conjugate.x / normSquared,
+		conjugate.y / normSquared,
+		conjugate.z / normSquared
+	};
+}
+
+void PrintQuaternion(const std::string& name, const Quaternion& q)
+{
+	std::cout << name << ": (" << std::fixed << std::setprecision(2)
+		<< q.w << ", " << q.x << ", " << q.y << ", " << q.z << ")" << std::endl;
+}
+
 
 
 
