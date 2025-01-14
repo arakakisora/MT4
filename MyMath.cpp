@@ -981,9 +981,9 @@ Matrix4x4 DirectionToDirection(const Vector3& from, const Vector3& to)
 	Vector3 toNormalized = Normaraize(to);
 	float dotProduct = Dot(fromNormalized, toNormalized);
 
-	// from と to が平行または反平行の場合の特別な処理
+	
 	if (dotProduct > 0.9999f) {
-		// from と to が同じ方向を向いている場合、単位行列を返す
+		
 		return Matrix4x4{
 			1.0f, 0.0f, 0.0f, 0.0f,
 			0.0f, 1.0f, 0.0f, 0.0f,
@@ -992,10 +992,10 @@ Matrix4x4 DirectionToDirection(const Vector3& from, const Vector3& to)
 		};
 	}
 	else if (dotProduct < -0.9999f) {
-		// from と to が反対方向を向いている場合、任意の垂直ベクトルを軸として180度回転行列を作成
+		
 		Vector3 orthogonalAxis = (fabs(fromNormalized.x) > fabs(fromNormalized.z)) ? Vector3{ -fromNormalized.y, fromNormalized.x, 0.0f } : Vector3{ 0.0f, -fromNormalized.z, fromNormalized.y };
 		orthogonalAxis = Normaraize(orthogonalAxis);
-		return MakeRotateAxisAngle(orthogonalAxis, 3.14159265358979323846f); // 180度回転
+		return MakeRotateAxisAngle(orthogonalAxis, std::numbers::pi_v<float>);
 	}
 
 	Vector3 axis = Cross(fromNormalized, toNormalized);
