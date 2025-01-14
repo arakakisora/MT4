@@ -208,6 +208,4 @@ Quaternion Normalize(const Quaternion& quaternion);
 Quaternion Inverse(const Quaternion& quaternion);
 
 
-
-// クォータニオンを出力するヘルパー関数
-void PrintQuaternion(const std::string& name, const Quaternion& q);
+void QuaternionScreenPrintf(int x, int y, const Quaternion& quaternion, const char* label);

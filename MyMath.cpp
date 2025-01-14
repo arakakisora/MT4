@@ -1056,11 +1056,20 @@ Quaternion Inverse(const Quaternion& quaternion)
 	};
 }
 
-void PrintQuaternion(const std::string& name, const Quaternion& q)
+void QuaternionScreenPrintf(int x, int y, const Quaternion& quaternion, const char* label)
 {
-	std::cout << name << ": (" << std::fixed << std::setprecision(2)
-		<< q.w << ", " << q.x << ", " << q.y << ", " << q.z << ")" << std::endl;
+	static const int kColumnWidth = 100;
+
+	// クォータニオンの各成分をスクリーンに表示
+	Novice::ScreenPrintf(x, y, "w: %.02f", quaternion.w);
+	Novice::ScreenPrintf(x + kColumnWidth, y, "x: %.02f", quaternion.x);
+	Novice::ScreenPrintf(x + kColumnWidth * 2, y, "y: %.02f", quaternion.y);
+	Novice::ScreenPrintf(x + kColumnWidth * 3, y, "z: %.02f", quaternion.z);
+	// ラベルを表示
+	Novice::ScreenPrintf(x + kColumnWidth * 4, y, "%s", label);
 }
+
+
 
 
 

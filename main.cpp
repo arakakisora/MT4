@@ -108,12 +108,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	Quaternion q1 = { 2.0f, 3.0f, 4.0f, 1.0f };
 	Quaternion q2 = { 1.0f, 3.0f, 5.0f, 2.0f };
 
-	Quaternion identity = IdentityQuaternion();
-	Quaternion conj = Conjugate(q1);
-	Quaternion inv = Inverse(q1);
-	Quaternion normal = Normalize(q1);
-	Quaternion mul1 = Multiply(q1, q2);
-	Quaternion mul2 = Multiply(q2, q1);
+	
 	//float norm = Norm(q1);
 
 	int  MousePosX;
@@ -181,13 +176,28 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		MatrixScreenPrintf(0, 400, rotateMatrix2);*/
 
 
-		//クオタニオンを描画
-		PrintQuaternion("Identity", identity);
-		PrintQuaternion("Conjugate", conj);
-		PrintQuaternion("Inverse", inv);
-		PrintQuaternion("Normalize", normal);
-		PrintQuaternion("Multiply(q1, q2)", mul1);
-		PrintQuaternion("Multiply(q2, q1)", mul2);
+		Quaternion identity = IdentityQuaternion();
+		Quaternion conj = Conjugate(q1);
+		Quaternion inv = Inverse(q1);
+		Quaternion normal = Normalize(q1);
+		Quaternion mul1 = Multiply(q1, q2);
+		Quaternion mul2 = Multiply(q2, q1);
+		// クォータニオンをスクリーンに表示
+		// クォータニオンをスクリーンに出力
+		int y = 0; // スクリーンのY座標
+		const int kRowHeight = 40; // 各行の高さ
+
+		QuaternionScreenPrintf(0, y, identity, "Identity");
+		y += kRowHeight;
+		QuaternionScreenPrintf(0, y, conj, "Conjugate of q1");
+		y += kRowHeight;
+		QuaternionScreenPrintf(0, y, inv, "Inverse of q1");
+		y += kRowHeight;
+		QuaternionScreenPrintf(0, y, normal, "Normalized q1");
+		y += kRowHeight;
+		QuaternionScreenPrintf(0, y, mul1, "Multiply(q1, q2)");
+		y += kRowHeight;
+		QuaternionScreenPrintf(0, y, mul2, "Multiply(q2, q1)");
 
 
 
